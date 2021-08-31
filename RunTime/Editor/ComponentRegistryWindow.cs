@@ -206,7 +206,7 @@ class ComponentRegistryWindow : EditorWindow
                 component => component.GetType().Name,
                 new ColumnInfo
                 {
-                    titleGetter = () => "Concrete Type",
+                    titleGetter = () => "Type",
                     fixWidth = 0,
                     relativeWidthWeight = 1,
                 })

@@ -1,15 +1,16 @@
 {
-    "name": "ComponentRegistryExample",
+    "name": "ComponentRegistrySample",
     "references": [
         "MUtility",
         "ComponentRegistry"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

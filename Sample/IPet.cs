@@ -1,4 +1,4 @@
-﻿﻿using ComponentRegistrySystem;
+﻿using ComponentRegistrySystem;
 
 public interface IPet : IRegisteredComponent 
 {

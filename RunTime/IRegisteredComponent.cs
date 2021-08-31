@@ -43,7 +43,6 @@ public interface IRegisteredComponent
             Destroyed();
         }            
      */
-    
 }
 
 public static class ComponentHelper
