@@ -1,3 +1,4 @@
-﻿using ComponentRegistrySystem;
+﻿using ComponentDatabasesSystem;
 
-public interface IFood<TPredator> : IRegisteredComponent { }
+[ComponentDatabaseType]
+public interface IFood<TPredator> { }

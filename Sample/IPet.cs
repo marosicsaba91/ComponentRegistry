@@ -1,5 +1,6 @@
-﻿using ComponentRegistrySystem;
+﻿using ComponentDatabasesSystem;
 
-public interface IPet : IRegisteredComponent 
+[ComponentDatabaseType]
+public interface IPet  
 {
 }

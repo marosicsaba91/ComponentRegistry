@@ -1,17 +1,13 @@
-﻿using System; 
-using ComponentRegistrySystem;
+﻿using ComponentDatabasesSystem;
 using UnityEngine;
 
-public abstract class Animal : MonoBehaviour, IRegisteredComponent
+[ComponentDatabaseType]
+public abstract class Animal : MonoBehaviour
 {
     public abstract string Introduce();
 
-    public event Action Enabled;
-    public event Action Disabled;
-    public event Action Destroyed;
-
-    void Awake() => ComponentRegistry.RegistrateComponent(this);
-    void OnEnable() => Enabled();
-    void OnDisable() => Disabled();
-    void OnDestroy() => Destroyed();
+    void Awake()
+    {
+        ComponentDatabase.global.AddComponent(this);
+    } 
 }

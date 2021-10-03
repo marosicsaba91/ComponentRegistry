@@ -1,6 +1,7 @@
-﻿using System;
+﻿/*
+using System;
 using System.Collections.Generic;
-using ComponentRegistrySystem;
+using ComponentDatabasesSystem;
 using MUtility;
 using UnityEngine;
 using UnityEngine.Profiling; 
@@ -26,7 +27,7 @@ public class TypeCollectionTest : MonoBehaviour
     
     void Init()
     {
-        _pets = ComponentRegistry.GetAll<IPet>();
+        _pets = (IReadOnlyList<IPet>)ComponentDatabase.global.GetComponents<IPet>(enabledOnly: false);
         _animals = ComponentRegistry.GetAll<Animal>();
         _predators = ComponentRegistry.GetAll<IPredator>();
         _enabledPredators = ComponentRegistry.GetAllEnabled<IPredator>();
@@ -86,16 +87,8 @@ public class TypeCollectionTest : MonoBehaviour
     [Serializable] class CountTestButton : InspectorButton<TypeCollectionTest>
     {
         protected override void OnClick(TypeCollectionTest obj)
-        {
-            /*
-            obj.Init();
-            Debug.Log("Pets  " + obj._pets.Count);
-            Debug.Log("Animals  " + obj._animals.Count);
-            Debug.Log("Predators  " + obj._enabledPredators.Count);
-            
-            Debug.Log("Pets 2  " + obj._pets2.Count); 
-            Debug.Log("Predators 2  " + obj._predators2.Count);
-            */ 
+        { 
         }
     }
 }
+*/

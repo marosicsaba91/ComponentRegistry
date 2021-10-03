@@ -1,7 +1,6 @@
-﻿﻿using System;
-using ComponentRegistrySystem;
+﻿using System;
+using ComponentDatabasesSystem;
 
- [DontRegisterComponent]
 public abstract class Dog : Animal, IPet, IPredator
 { 
     public override string Introduce() => "My name is Boy, Very G. Boy.";

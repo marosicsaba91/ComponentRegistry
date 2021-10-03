@@ -1,7 +1,6 @@
-﻿﻿using System;
-using ComponentRegistrySystem;
-
-[DontRegisterComponent]
+﻿using System;
+using ComponentDatabasesSystem;
+ 
 public class Crocodile : Animal, IPredator
 {
     public override string Introduce() => "I'm Mr. Crock!";

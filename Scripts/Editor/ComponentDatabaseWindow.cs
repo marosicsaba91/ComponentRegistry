@@ -1,6 +1,5 @@
 ﻿#if UNITY_EDITOR
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -8,16 +7,16 @@ using UnityEngine;
 using MUtility;
 using Object = UnityEngine.Object;
 
-namespace ComponentRegistrySystem
+namespace ComponentDatabasesSystem
 {
-class ComponentRegistryWindow : EditorWindow
+class ComponentDatabaseWindow : EditorWindow
 {
     const string editorPrefsKey = "ComponentRegistryWindowState";
     
     [MenuItem("Tools/Component Registry")]
     static void ShowWindow()
     {
-        var window = GetWindow<ComponentRegistryWindow>();
+        var window = GetWindow<ComponentDatabaseWindow>();
         window.titleContent = new GUIContent("Component Registry");
         window.Show();
     } 
@@ -66,29 +65,19 @@ class ComponentRegistryWindow : EditorWindow
 
     void DrawComponentTypes(Rect position)
     {
-        ComponentRegistry.ComponentDatabase selectedDatabase = enabledOnly ? ComponentRegistry.enabled : ComponentRegistry.all;
+        ComponentDatabase database = ComponentDatabase.global;
 
         Rect linePos = position;
-        linePos.height = EditorGUIUtility.singleLineHeight;
-        ComponentRegistry.Initialize();
+        linePos.height = EditorGUIUtility.singleLineHeight; 
 
         var infos = new List<ComponentTypeInfo>();
-        foreach (KeyValuePair<Type, IList> typeToComponents in selectedDatabase.interfaceToComponents)
+        foreach (KeyValuePair<Type, IList<object>> typeToComponents in database.componentTypeToObjects)
         {
             Type componentType = typeToComponents.Key;
 
-            int allCount, enabledCount;
-            if (Application.isPlaying)
-            {
-                allCount = ComponentRegistry.GetAll(componentType).Count;
-                enabledCount = ComponentRegistry.GetAllEnabled(componentType).Count;
-            }
-            else
-            {
-                allCount = ComponentRegistry.FindObjectsOfType(componentType, enabledOnly: false).Count;
-                enabledCount = ComponentRegistry.FindObjectsOfType(componentType, enabledOnly: true).Count;
-            }
-
+            int allCount = database.GetComponents(componentType, enabledOnly: false).Count();
+            int enabledCount = database.GetComponents(componentType,  enabledOnly: true).Count();
+            
             infos.Add(new ComponentTypeInfo
             {
                 type = componentType,
@@ -112,9 +101,9 @@ class ComponentRegistryWindow : EditorWindow
             return;
         }
 
-        ComponentRegistry.ComponentDatabase selectedDatabase = enabledOnly ? ComponentRegistry.enabled : ComponentRegistry.all;
-        List<IRegisteredComponent> componentInstances = selectedDatabase.GetComponents(SelectedComponentType, enabledOnly)
-            .Cast<IRegisteredComponent>().ToList();
+        ComponentDatabase selectedDatabase = ComponentDatabase.global;
+        List<MonoBehaviour> componentInstances = selectedDatabase.GetComponents(SelectedComponentType, enabledOnly)
+            .Cast<MonoBehaviour>().ToList();
 
         GenerateComponentInstancesTable();
         _componentInstancesTable.Draw(position, componentInstances);
@@ -128,7 +117,7 @@ class ComponentRegistryWindow : EditorWindow
     }
 
     GUITable<ComponentTypeInfo> _componentTypesTable;
-    GUITable<IRegisteredComponent> _componentInstancesTable;
+    GUITable<MonoBehaviour> _componentInstancesTable;
 
     void GenerateComponentTypesTable()
     {
@@ -181,9 +170,9 @@ class ComponentRegistryWindow : EditorWindow
     void GenerateComponentInstancesTable()
     {
         if (_componentInstancesTable != null) return;
-        var componentInstanceColumns = new List<IColumn<IRegisteredComponent>>
+        var componentInstanceColumns = new List<IColumn<MonoBehaviour>>
         {
-            new CheckboxColumn<IRegisteredComponent>(
+            new CheckboxColumn<MonoBehaviour>(
                 IsSelected,
                 SetSelection,
                 new ColumnInfo
@@ -192,8 +181,8 @@ class ComponentRegistryWindow : EditorWindow
                     relativeWidthWeight = 0,
                     customHeaderDrawer = DrawSelectAllCheckbox
                 }),
-            new LabelColumn<IRegisteredComponent>(
-                component => component.ToMonoBehaviour().name,
+            new LabelColumn<MonoBehaviour>(
+                component => component.name,
                 new ColumnInfo
                 {
                     titleGetter = () => 
@@ -202,7 +191,7 @@ class ComponentRegistryWindow : EditorWindow
                     fixWidth = 0,
                     relativeWidthWeight = 2,
                 }),
-            new LabelColumn<IRegisteredComponent>(
+            new LabelColumn<MonoBehaviour>(
                 component => component.GetType().Name,
                 new ColumnInfo
                 {
@@ -212,7 +201,7 @@ class ComponentRegistryWindow : EditorWindow
                 })
         };
 
-        _componentInstancesTable = new GUITable<IRegisteredComponent>(componentInstanceColumns, this)
+        _componentInstancesTable = new GUITable<MonoBehaviour>(componentInstanceColumns, this)
         {
             clickOnRow = ClickOnRow,
             isRowHighlightedGetter = (index, component) => IsSelected(component),
@@ -222,11 +211,11 @@ class ComponentRegistryWindow : EditorWindow
 
     void DrawSelectAllCheckbox(Rect position)
     {
-        ComponentRegistry.ComponentDatabase selectedDatabase = enabledOnly ? ComponentRegistry.enabled : ComponentRegistry.all;
-        List<IRegisteredComponent> componentInstances = selectedDatabase.GetComponents(SelectedComponentType, enabledOnly)
-            .Cast<IRegisteredComponent>().ToList();
+        ComponentDatabase selectedDatabase = ComponentDatabase.global;
+        List<MonoBehaviour> componentInstances = selectedDatabase.GetComponents(SelectedComponentType, enabledOnly)
+            .Cast<MonoBehaviour>().ToList();
         bool isAllSelected = componentInstances
-            .All(component => Selection.objects.Contains(component.GetGameObject()));
+            .All(component => Selection.objects.Contains(component.gameObject));
 
         const float checkBoxWidth = 14;
         float x = position.x + ((position.width - checkBoxWidth) / 2);
@@ -235,25 +224,25 @@ class ComponentRegistryWindow : EditorWindow
         if (isAllSelected == newValue) return;
 
         Selection.objects = newValue
-            ? componentInstances.Select(component => (Object) component.GetGameObject()).ToArray()
-            : new Object[0];
+            ? componentInstances.Select(component => (Object) component.gameObject).ToArray()
+            : Array.Empty<Object>();
 
     }
 
-    static bool IsSelected(IRegisteredComponent registeredComponent) =>
-        Selection.Contains(registeredComponent.GetGameObject());
+    static bool IsSelected(MonoBehaviour registeredComponent) =>
+        Selection.Contains(registeredComponent.gameObject);
 
-    static void ClickOnRow(int index, IRegisteredComponent registeredComponent)
+    static void ClickOnRow(int index, MonoBehaviour registeredComponent)
     {
-        if (Selection.objects.Length == 1 && Selection.objects[0] == registeredComponent.GetGameObject())
-            Selection.objects = new Object[0];
+        if (Selection.objects.Length == 1 && Selection.objects[0] == registeredComponent.gameObject)
+            Selection.objects = Array.Empty<Object>();
         else
-            Selection.objects = new Object[] {registeredComponent.GetGameObject()};
+            Selection.objects = new Object[] {registeredComponent.gameObject};
     }
 
-    static void SetSelection(IRegisteredComponent registeredComponent, bool isSelected)
+    static void SetSelection(MonoBehaviour registeredComponent, bool isSelected)
     {
-        Object obj = registeredComponent.GetGameObject();
+        Object obj = registeredComponent.gameObject;
         bool alreadyIn = Selection.objects.Contains(obj);
         if (isSelected)
         {
@@ -290,10 +279,6 @@ class ComponentRegistryWindow : EditorWindow
     public void OnEnable()
     {
         wantsMouseMove = true;
-        ComponentRegistry.EnabledComponentListChanged += OnComponentsChanged;
-        ComponentRegistry.AllComponentListChanged += OnComponentsChanged;
-        
-        
         string data = EditorPrefs.GetString(
             editorPrefsKey, JsonUtility.ToJson(this, prettyPrint: false));
         JsonUtility.FromJsonOverwrite(data, this);
@@ -301,14 +286,9 @@ class ComponentRegistryWindow : EditorWindow
 
     public void OnDisable()
     {
-        ComponentRegistry.EnabledComponentListChanged -= OnComponentsChanged;
-        ComponentRegistry.AllComponentListChanged -= OnComponentsChanged;
-        
         string data = JsonUtility.ToJson(this, prettyPrint: false);
         EditorPrefs.SetString(editorPrefsKey, data);
     }
-
-    void OnComponentsChanged() => Repaint();
 }
 }
 #endif
