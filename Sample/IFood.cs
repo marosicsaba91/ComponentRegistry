@@ -1,3 +1,4 @@
 ﻿using ComponentRegistrySystem;
 
-public interface IFood<TPredator> : IRegisteredComponent { }
+[Registrable]
+public interface IFood<TPredator>  { }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using ComponentRegistrySystem;
 using MUtility;
@@ -11,13 +12,11 @@ public class TypeCollectionTest : MonoBehaviour
     [SerializeField] SpeedTestButton speedTest;
     [SerializeField] CountTestButton countTest;
     
-    IReadOnlyList<IPet> _pets;
-    IReadOnlyList<Animal> _animals;
-    IReadOnlyList<IPredator> _predators;
-    IReadOnlyList<IPredator> _enabledPredators;
+    IEnumerable<IPet> _pets;
+    IEnumerable<Animal> _animals;
+    IEnumerable<IPredator> _predators; 
     
-    IReadOnlyList<object> _predators2;
-    IReadOnlyList<object> _pets2;
+    IEnumerable _predators2; 
     
     void Awake()
     {
@@ -28,10 +27,8 @@ public class TypeCollectionTest : MonoBehaviour
     {
         _pets = ComponentRegistry.GetAll<IPet>();
         _animals = ComponentRegistry.GetAll<Animal>();
-        _predators = ComponentRegistry.GetAll<IPredator>();
-        _enabledPredators = ComponentRegistry.GetAllEnabled<IPredator>();
-        _predators2 = ComponentRegistry.GetAll(typeof(IPredator));
-        _pets2 = ComponentRegistry.GetAllEnabled(typeof(IPet));
+        _predators = ComponentRegistry.GetAll<IPredator>(); 
+        _predators2 = ComponentRegistry.GetAll(typeof(IPredator)); 
     }
 
     void SpeedTest()
@@ -47,10 +44,7 @@ public class TypeCollectionTest : MonoBehaviour
 
             long heap0 = Profiler.usedHeapSizeLong;
             DateTime time0 = DateTime.Now;
-            
-            _pets = ComponentRegistry.GetAll<IPet>();
-            allComponentsFoundCount += _pets.Count;
-            
+              
             long heap1 = Profiler.usedHeapSizeLong;
             DateTime time1 = DateTime.Now;
             

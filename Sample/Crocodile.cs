@@ -1,7 +1,7 @@
 ﻿﻿using System;
 using ComponentRegistrySystem;
 
-[DontRegisterComponent]
+[Registrable]
 public class Crocodile : Animal, IPredator
 {
     public override string Introduce() => "I'm Mr. Crock!";

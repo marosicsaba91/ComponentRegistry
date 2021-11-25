@@ -1,7 +1,8 @@
 ﻿using System;
 using ComponentRegistrySystem;
 
-public interface IPredator : IRegisteredComponent 
+[Registrable]
+public interface IPredator  
 {
     Type GetFavoriteFood(); 
 }
