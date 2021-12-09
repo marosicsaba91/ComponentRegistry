@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq; 
 using MarosiUtility;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,23 +10,36 @@ using UnityEngine.SceneManagement;
 
 namespace ComponentRegistrySystem
 {
+abstract class ComponentList : IEnumerable<object> {
+    public abstract void Add(object element);
 
+    public abstract IEnumerator<object> GetEnumerator();
+ 
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+}
 
-class ComponentList : IEnumerable
+class ComponentList<T> : ComponentList
 {
-    readonly IList _list;
+    readonly List<T> _list;
 
-    public ComponentList(IList list)
+    public ComponentList(List<T> list)
     {
         _list = list;
     }
+
+    public override IEnumerator<object> GetEnumerator()
+    {
+        return (IEnumerator<object>)GetEnumeratorTyped();
+    }
     
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-    public IEnumerator GetEnumerator()
+    public IEnumerator<T> GetEnumeratorTyped()
     {
         for (int i = _list.Count - 1; i >= 0; i--)
         {
-            object element = _list[i];
+            T element = _list[i];
             if (element != null)
                 yield return element;
             else
@@ -34,7 +47,7 @@ class ComponentList : IEnumerable
         }
     }
 
-    internal void Add(object element) => _list.Add(element);
+    public override void Add(object element) => _list.Add((T)element);
 }
 
 
@@ -97,29 +110,32 @@ public static class ComponentRegistry
     {
         if (!registrableTypeToObjects.ContainsKey(registrableType))
         {
-            var list = (IList) GetAllRegistrableTypeOf(registrableType).ToList();
-            registrableTypeToObjects.Add(registrableType, new ComponentList(list));
+            // TODO: Add new element
+            //IList list = CreateListOfType(registrableType);
+            //registrableTypeToObjects.Add(registrableType, new ComponentList(list));
         }
     }
 
-    public static IEnumerable<T> GetAll<T>() =>
-        (IEnumerable<T>) GetAll(typeof(T));
+    public static IEnumerable<T> GetAll<T>() => (IEnumerable<T>)GetAll(typeof(T));
     
-    public static IEnumerable GetAll(Type type)
+    public static IEnumerable<object> GetAll(Type t)
     {
         if (!Application.isPlaying)
-            return FindObjectsOfType(type, enabledOnly: false);
+            return FindObjectsOfType( t, enabledOnly: false);
 
-        CheckRegistrableTypeToObjectMap(type);
-        return (IReadOnlyList<object>)registrableTypeToObjects[type];
-    } 
-    
-    public static int Count(Type type) => GetAll(type).Cast<object>().Count();
+        CheckRegistrableTypeToObjectMap(t);
+        IEnumerable<object> cl = registrableTypeToObjects[t];
+        return cl;
+    }
+
+    public static int Count(Type type) => GetAll(type).Count();
 
 
     // Util
+    internal static IReadOnlyList<T> FindObjectsOfType<T>(bool enabledOnly) where T: Component =>
+        (IReadOnlyList<T>) FindObjectsOfType(typeof(T), enabledOnly);
 
-    internal static IReadOnlyList<object> FindObjectsOfType(Type type, bool enabledOnly)
+    internal static IReadOnlyList<Component> FindObjectsOfType(Type type, bool enabledOnly)
     {
         IEnumerable<GameObject> gameObjects = enabledOnly
             ? Object.FindObjectsOfType<GameObject>()
