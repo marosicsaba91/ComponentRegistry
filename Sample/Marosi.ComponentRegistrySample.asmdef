@@ -1,8 +1,8 @@
 {
-    "name": "ComponentRegistrySample",
+    "name": "Marosi.ComponentRegistrySample",
     "references": [
-        "MUtility",
-        "ComponentRegistry"
+        "Marosi.Utility",
+        "Marosi.ComponentRegistry"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

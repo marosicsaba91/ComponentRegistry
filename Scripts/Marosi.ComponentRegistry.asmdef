@@ -1,14 +1,15 @@
 {
-    "name": "ComponentRegistry",
+    "name": "Marosi.ComponentRegistry",
     "references": [
-        "MUtility"
+        "Marosi.Utility"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

@@ -1,0 +1,16 @@
+{
+  "name": "com.marosi.componentregistry",
+  "version": "0.1.0",
+  "displayName": "Component Registry",
+  "description": "... TODO",
+  "unity": "2019.4",
+  "type": "library",
+  "dependencies": {
+    "com.marosi.utility": "1.2.2"
+  },
+  "author": {
+    "name": "Csaba Marosi",
+    "email": "marosicsaba91@gmail.com",
+    "url": "csabamarosi.net/unity-tools/"
+  }
+}
