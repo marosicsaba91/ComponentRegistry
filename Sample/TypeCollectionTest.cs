@@ -9,7 +9,7 @@ using UnityEngine.Profiling;
 public class TypeCollectionTest : MonoBehaviour
 {
     [SerializeField] int testCount = 1000;
-    [SerializeField] DisplayField speedTest = new DisplayField(nameof(SpeedTest));
+    [SerializeField] DisplayMember speedTest = new DisplayMember(nameof(SpeedTest));
     
     IEnumerable<IPet> _pets;
     IEnumerable<Animal> _animals;
