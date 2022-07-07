@@ -9,8 +9,7 @@ using UnityEngine.Profiling;
 public class TypeCollectionTest : MonoBehaviour
 {
     [SerializeField] int testCount = 1000;
-    [SerializeField] SpeedTestButton speedTest;
-    [SerializeField] CountTestButton countTest;
+    [SerializeField] DisplayField speedTest = new DisplayField(nameof(SpeedTest));
     
     IEnumerable<IPet> _pets;
     IEnumerable<Animal> _animals;
@@ -68,28 +67,5 @@ public class TypeCollectionTest : MonoBehaviour
 
         Debug.Log($" Component \t H: {allComponentsHeap}  T: {allComponentsTime}     N: {allComponentsFoundCount}");
         Debug.Log($" Unity  \t H: {allFindObjectsOfTypeHeap}  T: {allFindObjectsOfTypeTime}     N: {allFindObjectsOfTypeFoundCount}");
-    }
- 
-    
-    [Serializable] class SpeedTestButton : InspectorButton<TypeCollectionTest>
-    {
-        protected override void OnClick(TypeCollectionTest obj) => obj.SpeedTest();
-    } 
-
-    
-    [Serializable] class CountTestButton : InspectorButton<TypeCollectionTest>
-    {
-        protected override void OnClick(TypeCollectionTest obj)
-        {
-            /*
-            obj.Init();
-            Debug.Log("Pets  " + obj._pets.Count);
-            Debug.Log("Animals  " + obj._animals.Count);
-            Debug.Log("Predators  " + obj._enabledPredators.Count);
-            
-            Debug.Log("Pets 2  " + obj._pets2.Count); 
-            Debug.Log("Predators 2  " + obj._predators2.Count);
-            */ 
-        }
     }
 }
