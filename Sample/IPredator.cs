@@ -2,7 +2,7 @@
 using ComponentRegistrySystem;
 
 [Registrable]
-public interface IPredator  
+public interface IPredator
 {
-    Type GetFavoriteFood(); 
+	Type GetFavoriteFood();
 }

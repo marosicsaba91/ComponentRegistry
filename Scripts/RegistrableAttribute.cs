@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace ComponentRegistrySystem
 {
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
-public class RegistrableAttribute : Attribute
-{
-}
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
+	public class RegistrableAttribute : Attribute
+	{
+	}
 }

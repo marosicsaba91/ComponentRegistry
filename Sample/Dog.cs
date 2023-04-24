@@ -1,9 +1,9 @@
-﻿﻿using System;
+﻿using System;
 using ComponentRegistrySystem;
 
- [Registrable]
+[Registrable]
 public abstract class Dog : Animal, IPet, IPredator
-{ 
-    public override string Introduce() => "My name is Boy, Very G. Boy.";
-    public Type GetFavoriteFood() => typeof(Cat); 
+{
+	public override string Introduce() => "My name is Boy, Very G. Boy.";
+	public Type GetFavoriteFood() => typeof(Cat);
 }

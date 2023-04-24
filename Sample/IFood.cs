@@ -1,4 +1,4 @@
 ﻿using ComponentRegistrySystem;
 
 [Registrable]
-public interface IFood<TPredator>  { }
+public interface IFood<TPredator> { }
