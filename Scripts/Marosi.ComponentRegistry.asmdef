@@ -1,7 +1,9 @@
 {
     "name": "Marosi.ComponentRegistry",
+    "rootNamespace": "",
     "references": [
-        "Marosi.Utility"
+        "Marosi.Utility",
+        "ThisPlay"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

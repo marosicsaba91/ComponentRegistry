@@ -149,7 +149,7 @@ namespace ComponentRegistrySystem
 			var rootObjects = new List<GameObject>();
 			for (int i = 0; i < SceneManager.sceneCount; i++)
 			{
-				Scene scene = SceneManager.GetSceneAt(i);
+				UnityEngine.SceneManagement.Scene scene = SceneManager.GetSceneAt(i);
 				if (!scene.isLoaded)
 					continue;
 				scene.GetRootGameObjects(rootObjects);

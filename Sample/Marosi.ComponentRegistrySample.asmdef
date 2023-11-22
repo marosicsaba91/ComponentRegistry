@@ -1,8 +1,10 @@
 {
     "name": "Marosi.ComponentRegistrySample",
+    "rootNamespace": "",
     "references": [
         "Marosi.Utility",
-        "Marosi.ComponentRegistry"
+        "Marosi.ComponentRegistry",
+        "ThisPlay"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

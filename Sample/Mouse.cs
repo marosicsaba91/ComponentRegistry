@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ComponentRegistrySystem;
+﻿using ComponentRegistrySystem;
 
 public interface ICatFood : IFood<Cat> { }
 
