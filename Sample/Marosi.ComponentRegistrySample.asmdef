@@ -4,7 +4,7 @@
     "references": [
         "Marosi.Utility",
         "Marosi.ComponentRegistry",
-        "ThisPlay"
+        "EasyInspector"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

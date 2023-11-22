@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using ComponentRegistrySystem;
-using MUtility;
+using EasyInspector;
 using UnityEngine;
 using UnityEngine.Profiling;
 

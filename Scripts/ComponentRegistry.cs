@@ -56,8 +56,8 @@ namespace ComponentRegistrySystem
 
 		static List<Type> _registrableTypes;
 		static readonly Dictionary<Type, List<Type>> componentTypeToRegistrableTypeMap =
-			new Dictionary<Type, List<Type>>();
-		static readonly Dictionary<Type, ComponentList> registrableTypeToObjects = new Dictionary<Type, ComponentList>();
+			new();
+		static readonly Dictionary<Type, ComponentList> registrableTypeToObjects = new();
 
 		public static IEnumerable<Type> RegistrableTypes()
 		{
@@ -146,7 +146,7 @@ namespace ComponentRegistrySystem
 
 		static IEnumerable<GameObject> GetAllObjects()
 		{
-			var rootObjects = new List<GameObject>();
+			List<GameObject> rootObjects = new();
 			for (int i = 0; i < SceneManager.sceneCount; i++)
 			{
 				UnityEngine.SceneManagement.Scene scene = SceneManager.GetSceneAt(i);
@@ -181,7 +181,7 @@ namespace ComponentRegistrySystem
 		{
 			if (type.ContainsGenericParameters)
 				return false;
-			var attribute = Attribute.GetCustomAttribute(type, typeof(RegistrableAttribute), inherit: false);
+			Attribute attribute = Attribute.GetCustomAttribute(type, typeof(RegistrableAttribute), inherit: false);
 			return attribute != null;
 		}
 

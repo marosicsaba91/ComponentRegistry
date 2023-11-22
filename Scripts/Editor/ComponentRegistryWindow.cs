@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using MUtility;
 using Object = UnityEngine.Object;
+using EasyInspector;
 
 namespace ComponentRegistrySystem
 {
@@ -156,7 +157,7 @@ namespace ComponentRegistrySystem
 		void DrawCheckboxHeader(Rect position)
 		{
 			const int titleWidth = 38;
-			Rect labelPos = new Rect(position.xMax - titleWidth, position.y, titleWidth, position.height);
+			Rect labelPos = new(position.xMax - titleWidth, position.y, titleWidth, position.height);
 			GUI.Label(labelPos, "All");
 		}
 
@@ -164,8 +165,8 @@ namespace ComponentRegistrySystem
 		{
 			if (_componentInstancesTable != null)
 				return;
-			List<IColumn<Component>> componentInstanceColumns = new List<IColumn<Component>>
-		{
+			List<IColumn<Component>> componentInstanceColumns = new()
+			{
 			new CheckboxColumn<Component>(
 				IsSelected,
 				SetSelection,
@@ -212,7 +213,7 @@ namespace ComponentRegistrySystem
 
 			const float checkBoxWidth = 14;
 			float x = position.x + ((position.width - checkBoxWidth) / 2);
-			Rect pos = new Rect(x, position.y, checkBoxWidth, position.height);
+			Rect pos = new(x, position.y, checkBoxWidth, position.height);
 			bool newValue = EditorGUI.Toggle(pos, isAllSelected);
 			if (isAllSelected == newValue)
 				return;
