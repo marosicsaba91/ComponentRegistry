@@ -2,8 +2,8 @@
     "name": "Marosi.ComponentRegistry",
     "rootNamespace": "",
     "references": [
-        "Marosi.Utility",
-        "EasyInspector"
+        "EasyInspector",
+        "MUtility"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
