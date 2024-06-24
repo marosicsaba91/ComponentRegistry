@@ -2,14 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using ComponentRegistrySystem;
-using EasyInspector;
+using EasyEditor;
 using UnityEngine;
 using UnityEngine.Profiling;
 
 public class TypeCollectionTest : MonoBehaviour
 {
 	[SerializeField] int testCount = 1000;
-	[SerializeField] EasyMember speedTest = new(nameof(SpeedTest));
+	[SerializeField] EasyButton speedTest = new(nameof(SpeedTest));
 
 	IEnumerable<IPet> _pets;
 	IEnumerable<Animal> _animals;

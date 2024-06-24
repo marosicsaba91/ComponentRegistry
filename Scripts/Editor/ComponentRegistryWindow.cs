@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using MUtility;
 using Object = UnityEngine.Object;
-using EasyInspector;
+using EasyEditor;
 
 namespace ComponentRegistrySystem
 {
